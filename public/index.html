@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Math Microservice</title>
+  <style>
+    body { font-family: Arial; margin: 40px; }
+    .section {
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin: 10px;
+      width: 30%;
+      float: left;
+    }
+    input { padding: 5px; margin-right: 10px; }
+    button { padding: 5px 10px; margin-top: 10px; }
+    #container { display: flex; justify-content: space-between; }
+    .result { margin-top: 15px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Math Utility Service</h2>
+  <div id="container">
+    <!-- Section 1: Square + Cube -->
+    <div class="section">
+      <h3>Square + Cube</h3>
+      <input type="number" id="numBoth" placeholder="Enter number">
+      <br>
+      <button onclick="calculateBoth()">Submit</button>
+      <button onclick="clearBoth()">Clear</button>
+      <div id="resultBoth" class="result"></div>
+    </div>
+
+    <!-- Section 2: Square Only -->
+    <div class="section">
+      <h3>Square Only</h3>
+      <input type="number" id="numSquare" placeholder="Enter number">
+      <br>
+      <button onclick="calculateSquare()">Submit</button>
+      <button onclick="clearSquare()">Clear</button>
+      <div id="resultSquare" class="result"></div>
+    </div>
+
+    <!-- Section 3: Cube Only -->
+    <div class="section">
+      <h3>Cube Only</h3>
+      <input type="number" id="numCube" placeholder="Enter number">
+      <br>
+      <button onclick="calculateCube()">Submit</button>
+      <button onclick="clearCube()">Clear</button>
+      <div id="resultCube" class="result"></div>
+    </div>
+  </div>
+
+  <script>
+    async function calculateBoth() {
+      const num = document.getElementById('numBoth').value;
+      if (!num) { alert("Enter a number"); return; }
+
+      const squareRes = await fetch(`/api/square?number=${num}`);
+      const squareData = await squareRes.json();
+
+      const cubeRes = await fetch(`/api/cube?number=${num}`);
+      const cubeData = await cubeRes.json();
+
+      document.getElementById('resultBoth').innerHTML =
+        `Square: ${squareData.square}<br>Cube: ${cubeData.cube}`;
+    }
+    function clearBoth() {
+      document.getElementById('numBoth').value = "";
+      document.getElementById('resultBoth').innerHTML = "";
+    }
+
+    async function calculateSquare() {
+      const num = document.getElementById('numSquare').value;
+      if (!num) { alert("Enter a number"); return; }
+
+      const res = await fetch(`/api/square?number=${num}`);
+      const data = await res.json();
+
+      document.getElementById('resultSquare').innerHTML =
+        `Square: ${data.square}`;
+    }
+    function clearSquare() {
+      document.getElementById('numSquare').value = "";
+      document.getElementById('resultSquare').innerHTML = "";
+    }
+
+    async function calculateCube() {
+      const num = document.getElementById('numCube').value;
+      if (!num) { alert("Enter a number"); return; }
+
+      const res = await fetch(`/api/cube?number=${num}`);
+      const data = await res.json();
+
+      document.getElementById('resultCube').innerHTML =
+        `Cube: ${data.cube}`;
+    }
+    function clearCube() {
+      document.getElementById('numCube').value = "";
+      document.getElementById('resultCube').innerHTML = "";
+    }
+  </script>
+</body>
+</html>
